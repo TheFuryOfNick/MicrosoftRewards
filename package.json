@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "search": "node ./scripts/EdgeSearch.js"
+    "desktop-searches": "node ./scripts/EdgeSearch.js"
   },
   "author": "",
   "license": "ISC",
