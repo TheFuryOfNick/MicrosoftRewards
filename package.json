@@ -1,0 +1,15 @@
+{
+  "name": "edgesearcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "search": "node ./scripts/EdgeSearch.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "msedgedriver": "^91.0.0",
+    "selenium-webdriver": "^4.1.1"
+  }
+}
