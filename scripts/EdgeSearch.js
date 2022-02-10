@@ -1,8 +1,16 @@
 const {By,Key,Builder} = require("selenium-webdriver");
 require('msedgedriver');
 
-const NUM_SEARCHES = 25;
-const PAUSE_BETWEEN_SEARCHES = 2000;
+const NUM_SEARCHES = 50;
+const PAUSE = 1000;
+const BING_SEARCH_URL = "https://bing.com";
+const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
+// TODOs 
+// - Impersonate mobile (separate caps on # desktop and mobile searches so farm both)
+// - Cleanup code
+// - Document
+// - Better logging
 
 (async function RunSearch() {
 
@@ -13,13 +21,11 @@ const PAUSE_BETWEEN_SEARCHES = 2000;
     options.addArguments("profile-directory=Default");
     const driver = edge.Driver.createSession(options, service);
 
-    const ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-
     const randomCharacter = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
     let searchTerm = "Bing ";
 
     try {
-        await driver.get('https://bing.com');
+        await driver.get(BING_SEARCH_URL);
 
         for (let i = 0; i < NUM_SEARCHES; i++) {
             // Add character to search
@@ -31,7 +37,7 @@ const PAUSE_BETWEEN_SEARCHES = 2000;
             await element.submit();
 
             // Pause before doing next search
-            await driver.sleep(PAUSE_BETWEEN_SEARCHES);
+            await driver.sleep(PAUSE);
         }
 
     } 
