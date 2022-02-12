@@ -1,24 +1,32 @@
 const {By,Key,Builder} = require("selenium-webdriver");
+const { exists } = require("selenium-webdriver/io");
 require('msedgedriver');
 
 const NUM_SEARCHES = 50;
-const PAUSE = 1000;
+const PAUSE = 2000;
 const BING_SEARCH_URL = "https://bing.com";
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-
-// TODOs 
-// - Impersonate mobile (separate caps on # desktop and mobile searches so farm both)
-// - Cleanup code
-// - Document
-// - Better logging
+const USER_DATA_DIR = "C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Data";
+const PROFILE_DIR = "Default";
+const MOBILE = "mobile";
+const MOBILE_DEVICE = "Nexus 5";
 
 (async function RunSearch() {
+    // Get Input Args
+    const myArgs = process.argv.slice(2);
+    const isMobile = myArgs && myArgs[0].toLowerCase() === MOBILE;
+    const numSearches = myArgs && (myArgs[1] || NUM_SEARCHES);
+    console.log(`Running EdgeSearch on ${isMobile ? "Mobile" : "Desktop"} with number of searches = ${numSearches}...`);
 
+    // Create Driver
     const edge = require('selenium-webdriver/edge');
     const service = new edge.ServiceBuilder().enableVerboseLogging().build();
     const options = new edge.Options();
-    options.addArguments("user-data-dir=C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Data");
-    options.addArguments("profile-directory=Default");
+    if (isMobile) {
+        options.setMobileEmulation({"deviceName": MOBILE_DEVICE});
+    }
+    options.addArguments(`user-data-dir=${USER_DATA_DIR}`);
+    options.addArguments(`profile-directory=${PROFILE_DIR}`);
     const driver = edge.Driver.createSession(options, service);
 
     const randomCharacter = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
@@ -27,7 +35,7 @@ const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     try {
         await driver.get(BING_SEARCH_URL);
 
-        for (let i = 0; i < NUM_SEARCHES; i++) {
+        for (let i = 0; i < numSearches; i++) {
             // Add character to search
             searchTerm = randomCharacter();
 

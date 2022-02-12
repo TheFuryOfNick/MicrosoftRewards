@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "desktop-searches": "node ./scripts/EdgeSearch.js",
+    "desktop-searches": "node ./scripts/EdgeSearch.js desktop 50",
+    "mobile-searches": "node ./scripts/EdgeSearch.js mobile 50",
     "rewards-links": "node ./scripts/DailyRewardsLinkClicker.js",
-    "all": "npm run desktop-searches && npm run rewards-links"
+    "all": "npm run desktop-searches && npm run mobile-searches && npm run rewards-links"
   },
   "author": "",
   "license": "ISC",
