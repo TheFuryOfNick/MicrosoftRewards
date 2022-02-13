@@ -20,7 +20,7 @@ const MOBILE_DEVICE = "Nexus 5";
 
     // Create Driver
     const edge = require('selenium-webdriver/edge');
-    const service = new edge.ServiceBuilder().enableVerboseLogging().build();
+    const service = new edge.ServiceBuilder().build();
     const options = new edge.Options();
     if (isMobile) {
         options.setMobileEmulation({"deviceName": MOBILE_DEVICE});
@@ -47,10 +47,8 @@ const MOBILE_DEVICE = "Nexus 5";
             // Pause before doing next search
             await driver.sleep(PAUSE);
         }
-
     } 
     finally {
         await driver.quit();
     }
-
 })();
