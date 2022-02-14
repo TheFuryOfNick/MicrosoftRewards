@@ -6,7 +6,6 @@ const REWARDS_URL = "https://rewards.microsoft.com/";
 const PAUSE = 3000;
 const USER_DATA_DIR = "C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Data";
 const PROFILE_DIR = "Default";
-const NUM_OF_QUIZ_SETS = 3;
 const MAX_ATTEMPTS = 30;
 
 // CSS Selectors
@@ -20,36 +19,32 @@ const POLL_CHOICE_PANEL_CLASSNAME = "btOption";
 
 
 const takeQuiz = async (driver) => {
-    // TODO: Find all answer panels, click each in succession until the quiz is complete
-    // TODO: Handle case when all answers have been selected, the set will end and the code will keep trying to click the remaining ones
-    // TODO: Quiz could already have been completed so handle that
+    // Click the start quiz button
     await driver.sleep(PAUSE);
     const startButton = await driver.findElements(By.id(QUIZ_START_BUTTON_ID));
     if (startButton.length === 0) {
         console.debug(`-->NO QUIZ START BUTTON FOUND, SKIPPING...`);
         return;
     }
-
-    // Click Quiz Start Button
-    await driver.sleep(PAUSE);
+    
     try {
         await startButton[0].click();
     } catch (e) {
         console.warn("ERROR STARTING QUIZ. CONTINUING...");
         return;
     }
-    await driver.sleep(PAUSE);
     
     // Keep clicking unclicked answers until the quiz is completed
     let iterationCount = 0;
     while (iterationCount++ < MAX_ATTEMPTS) {
+        await driver.sleep(PAUSE);
         const answerPanels = await driver.findElements(By.className(ANSWER_PANEL_CLASSNAME));
         if (answerPanels.length === 0) {
             console.debug(`-->NO ANSWER PANELS FOUND, QUIZ MAY HAVE BEEN COMPLETED`);
             return;
         }
 
-        // Click each answer panel
+        // Find and click the first unclicked answer panel
         for (const el of answerPanels) {
             const classNames = await el.getAttribute("class");
             if (classNames.includes(COMPLETED_QUIZ_OPTION_CLASSNAME)) {
@@ -60,11 +55,9 @@ const takeQuiz = async (driver) => {
             try {
                 // Open link then wait for page to reload and start over
                 await el.click();
-                await driver.sleep(PAUSE);
                 break;
             } catch (e) {
-                const link = await el.getId();
-                console.warn(`-->ERROR CLICKING ANSWER PANEL: ${link}, Skipping Quiz...`);
+                console.warn(`-->ERROR CLICKING ANSWER PANEL: ${await el.getText()}, Skipping Quiz...`);
                 // console.error(e);
                 return;
             }
@@ -72,13 +65,11 @@ const takeQuiz = async (driver) => {
     }
 
     console.debug(`-->QUIZ COMPLETE!`);
-
 };
 
 const doPoll = async (driver) => {
     // Find first answer in the poll and click it
     const pollChoices = await driver.findElements(By.className(POLL_CHOICE_PANEL_CLASSNAME));
-    console.log(`Num Poll Choices: ${pollChoices.length}`);
     try {
         // Click answer
         await driver.sleep(PAUSE);
@@ -87,6 +78,7 @@ const doPoll = async (driver) => {
     } catch (e) {
         console.warn(`-->ERROR CLICKING POLL CHOICE, CONTINUING...`);
         console.error(e);
+        return;
     }
     console.log("POLL COMPLETED");
 };
@@ -119,14 +111,11 @@ const doPoll = async (driver) => {
 
         // Open and complete each link
         for (const el of els) {
-            // console.info(`OPENING LINK: ${await el.getText()} ***`);
             try {
                 // Open link
                 await el.click();
             } catch (e) {
-                const link = await el.getId();
-                // console.warn(`-->ERROR OPENING LINK: ${link}, CONTINUING...`);
-                // console.error(e);
+                console.debug(`ERROR OPENING LINK: ${await el.getId()}, CONTINUING...`);
                 continue;
             }
 
@@ -137,27 +126,19 @@ const doPoll = async (driver) => {
             // Look for quiz
             const quizPanel = await driver.findElements(By.id(QUIZ_PANEL_ID));
             if (quizPanel.length > 0) {
-                // console.info("-->Quiz Found");
                 await takeQuiz(driver);
-            } else {
-                // console.debug("-->No Quiz Found, continuing...");
             }
 
             // Look for poll
             const pollPanel = await driver.findElements(By.id(POLL_PANEL_ID));
             if (pollPanel.length > 0) {
-                // console.info("-->Poll Found");
                 await doPoll(driver);
-            } else {
-                // console.debug("-->No Poll Found, continuing...");
             }
 
             // Pause, then close the tab and switch back
             await driver.sleep(PAUSE);
             await driver.close();
             await driver.switchTo().window(tabs[0]);
-            
-            // console.info("-->Link Completed!");
         }
 
         console.log("*** FINISHED SUCCESSFULLY ***");

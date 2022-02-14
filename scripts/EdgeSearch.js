@@ -1,5 +1,4 @@
-const {By,Key,Builder} = require("selenium-webdriver");
-const { exists } = require("selenium-webdriver/io");
+const {By} = require("selenium-webdriver");
 require('msedgedriver');
 
 const NUM_SEARCHES = 50;
