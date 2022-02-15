@@ -13,7 +13,7 @@ const REWARD_LINK_CLASSNAME = "ds-card-sec";
 const QUIZ_PANEL_ID = "quizWelcomeContainer";
 const QUIZ_START_BUTTON_ID = "rqStartQuiz";
 const POLL_PANEL_ID = "btPollOverlay";
-const ANSWER_PANEL_CLASSNAME = "b_cards";
+const ANSWER_PANEL_CLASSNAME = "bt_lstcl_card";
 const COMPLETED_QUIZ_OPTION_CLASSNAME = "btsel";
 const POLL_CHOICE_PANEL_CLASSNAME = "btOption";
 
@@ -40,7 +40,7 @@ const takeQuiz = async (driver) => {
         await driver.sleep(PAUSE);
         const answerPanels = await driver.findElements(By.className(ANSWER_PANEL_CLASSNAME));
         if (answerPanels.length === 0) {
-            console.debug(`-->NO ANSWER PANELS FOUND, QUIZ MAY HAVE BEEN COMPLETED`);
+            console.log(`-->NO ANSWER PANELS FOUND, QUIZ MAY HAVE BEEN COMPLETED`);
             return;
         }
 
@@ -64,7 +64,7 @@ const takeQuiz = async (driver) => {
         }
     }
 
-    console.debug(`-->QUIZ COMPLETE!`);
+    console.log(`-->QUIZ COMPLETE!`);
 };
 
 const doPoll = async (driver) => {
