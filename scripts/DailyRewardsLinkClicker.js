@@ -14,7 +14,9 @@ const QUIZ_PANEL_ID = "quizWelcomeContainer";
 const QUIZ_START_BUTTON_ID = "rqStartQuiz";
 const POLL_PANEL_ID = "btPollOverlay";
 const ANSWER_PANEL_CLASSNAME = "bt_lstcl_card";
-const COMPLETED_QUIZ_OPTION_CLASSNAME = "btsel";
+const ALT_ANSWER_PANEL_CLASSNAME = "rqOption";
+const COMPLETED_ANSWER_PANEL_CLASSNAME = "btsel";
+const ALT_COMPLETED_ANSWER_PANEL_CLASSNAME = "optionDisable";
 const POLL_CHOICE_PANEL_CLASSNAME = "btOption";
 
 
@@ -38,8 +40,14 @@ const takeQuiz = async (driver) => {
     let iterationCount = 0;
     while (iterationCount++ < MAX_ATTEMPTS) {
         await driver.sleep(PAUSE);
-        const answerPanels = await driver.findElements(By.className(ANSWER_PANEL_CLASSNAME));
+        // Search for answer panels to click
+        let answerPanels = await driver.findElements(By.className(ANSWER_PANEL_CLASSNAME));
         if (answerPanels.length === 0) {
+            // Some quizes have a different set of answer panels, so look for those
+            answerPanels = await driver.findElements(By.className(ALT_ANSWER_PANEL_CLASSNAME));
+        }
+        if (answerPanels.length === 0) {
+            // No answer panels found of either type, so abort
             console.log(`-->NO ANSWER PANELS FOUND, QUIZ MAY HAVE BEEN COMPLETED`);
             return;
         }
@@ -47,7 +55,7 @@ const takeQuiz = async (driver) => {
         // Find and click the first unclicked answer panel
         for (const el of answerPanels) {
             const classNames = await el.getAttribute("class");
-            if (classNames.includes(COMPLETED_QUIZ_OPTION_CLASSNAME)) {
+            if (classNames.includes(COMPLETED_ANSWER_PANEL_CLASSNAME) || classNames.includes(ALT_COMPLETED_ANSWER_PANEL_CLASSNAME)) {
                 // This panel has already been clicked so skip it
                 continue;
             }
@@ -99,6 +107,9 @@ const doPoll = async (driver) => {
     const options = new edge.Options();
     options.addArguments(`user-data-dir=${USER_DATA_DIR}`);
     options.addArguments(`profile-directory=${PROFILE_DIR}`);
+    options.addArguments(`--enable-features=msEdgeDeleteBrowsingDataOnExit`);
+    // options.addArguments(`--inprivate`);
+    // options.headless();
     const driver = edge.Driver.createSession(options, service);
 
     try {
