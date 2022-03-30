@@ -4,6 +4,7 @@ require('msedgedriver');
 // Configurations
 const REWARDS_URL = "https://rewards.microsoft.com/";
 const PAUSE = 3000;
+const LONG_PAUSE = 5000;
 const USER_DATA_DIR = "C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Data";
 const PROFILE_DIR = "Default";
 const MAX_ATTEMPTS = 30;
@@ -25,7 +26,7 @@ const takeQuiz = async (driver) => {
     await driver.sleep(PAUSE);
     const startButton = await driver.findElements(By.id(QUIZ_START_BUTTON_ID));
     if (startButton.length === 0) {
-        console.debug(`-->NO QUIZ START BUTTON FOUND, SKIPPING...`);
+        console.info(`-->NO QUIZ START BUTTON FOUND, SKIPPING...`);
         return;
     }
     
@@ -39,11 +40,11 @@ const takeQuiz = async (driver) => {
     // Keep clicking unclicked answers until the quiz is completed
     let iterationCount = 0;
     while (iterationCount++ < MAX_ATTEMPTS) {
-        await driver.sleep(PAUSE);
+        await driver.sleep(LONG_PAUSE);
         // Search for answer panels to click
         let answerPanels = await driver.findElements(By.className(ANSWER_PANEL_CLASSNAME));
         if (answerPanels.length === 0) {
-            // Some quizes have a different set of answer panels, so look for those
+            // Some quizzes have a different set of answer panels, so look for those
             answerPanels = await driver.findElements(By.className(ALT_ANSWER_PANEL_CLASSNAME));
         }
         if (answerPanels.length === 0) {
@@ -59,7 +60,7 @@ const takeQuiz = async (driver) => {
                 // This panel has already been clicked so skip it
                 continue;
             }
-            console.debug(`-->CLICKING ANSWER PANEL: ${await el.getText()}`);
+            console.info(`-->CLICKING ANSWER PANEL: ${await el.getText()}`);
             try {
                 // Open link then wait for page to reload and start over
                 await el.click();
@@ -126,7 +127,7 @@ const doPoll = async (driver) => {
                 // Open link
                 await el.click();
             } catch (e) {
-                console.debug(`ERROR OPENING LINK: ${await el.getId()}, CONTINUING...`);
+                console.info(`ERROR OPENING LINK: ${await el.getId()}, CONTINUING...`);
                 continue;
             }
 
