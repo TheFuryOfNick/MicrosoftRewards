@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "desktop-searches": "node ./scripts/EdgeSearch.js desktop 30",
-    "mobile-searches": "node ./scripts/EdgeSearch.js mobile 20",
+    "desktop-searches": "node ./scripts/EdgeSearch.js desktop 35",
+    "mobile-searches": "node ./scripts/EdgeSearch.js mobile 25",
     "rewards-links": "node ./scripts/DailyRewardsLinkClicker.js",
-    "all": "npm run rewards-links && npm run desktop-searches && npm run mobile-searches"
+    "all": "npm run rewards-links && npm run desktop-searches && npm run mobile-searches",
+    "update-msedgedriver": "cd ./node_modules/msedgedriver && npm run update-msedgedriver && cd ../.."
   },
   "author": "",
   "license": "ISC",
