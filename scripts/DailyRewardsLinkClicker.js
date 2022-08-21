@@ -4,7 +4,7 @@ require('msedgedriver');
 // Configurations
 const REWARDS_URL = "https://rewards.microsoft.com/";
 const PAUSE = 3000;
-const LONG_PAUSE = 3000;
+const LONG_PAUSE = 5000;
 const USER_DATA_DIR = "C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Data";
 const PROFILE_DIR = "Default";
 const MAX_ATTEMPTS = 30;
