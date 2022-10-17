@@ -26,17 +26,17 @@ const MOBILE_DEVICE = "Nexus 5";
     }
     options.addArguments(`user-data-dir=${USER_DATA_DIR}`);
     options.addArguments(`profile-directory=${PROFILE_DIR}`);
+    options.addArguments('headless');
     const driver = edge.Driver.createSession(options, service);
 
     const randomCharacter = () => ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-    let searchTerm = "Bing ";
 
     try {
         await driver.get(BING_SEARCH_URL);
 
         for (let i = 0; i < numSearches; i++) {
             // Add character to search
-            searchTerm = randomCharacter();
+            const searchTerm = randomCharacter();
 
             // Submit search
             const element = await driver.findElement(By.id('sb_form_q'));
@@ -48,6 +48,7 @@ const MOBILE_DEVICE = "Nexus 5";
         }
     } 
     finally {
+        await driver.close();
         await driver.quit();
     }
 })();
