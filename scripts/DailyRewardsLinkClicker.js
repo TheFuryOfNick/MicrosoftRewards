@@ -17,9 +17,6 @@ const POLL_PANEL_ID = "btPollOverlay";
 const ANSWER_PANEL_CLASSNAME = "bt_lstcl_card";
 const ALT_ANSWER_PANEL_CLASSNAME = "rqOption";
 const THIS_OR_THAT_PANEL_CLASSNAME = "btOptionCard";
-
-const QUIZ_CLASSNAMES = ["bt_lstcl_card", "rqOption", "btOptionCard"];
-
 const COMPLETED_ANSWER_PANEL_CLASSNAME = "btsel";
 const ALT_COMPLETED_ANSWER_PANEL_CLASSNAME = "optionDisable";
 const POLL_CHOICE_PANEL_CLASSNAME = "btOption";
@@ -55,9 +52,6 @@ const takeQuiz = async (driver) => {
             // This or That quizzes
             answerPanels = await driver.findElements(By.className(THIS_OR_THAT_PANEL_CLASSNAME));
         }
-
-        // const answerPanels = [];
-        // QUIZ_CLASSNAMES.forEach(async className => answerPanels.push(await driver.findElements(By.className(className))));
 
         if (answerPanels.length === 0) {
             // No answer panels found of either type, so abort
@@ -104,14 +98,7 @@ const doPoll = async (driver) => {
     console.log("POLL COMPLETED");
 };
 
-/*
-* TODOs:
-* - The Rewards page includes a preview of tomorrow's 3 links, which aren't clickable so the click throws an exception.
- It would be nice to be able to detect these and skip them, though it's able to recover with a Try-Catch so it's not required.
- All I see is the parent div has a disabled tag on it, so maybe a more complex selector would skip these.
-*/
-
-
+// Run Script
 (async () => {
 
     // Init Edge Driver

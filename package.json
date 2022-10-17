@@ -1,8 +1,8 @@
 {
-  "name": "edgesearcher",
+  "name": "microsoft-rewards-unner",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "desktop-searches": "node ./scripts/EdgeSearch.js desktop 35",
     "mobile-searches": "node ./scripts/EdgeSearch.js mobile 25",
@@ -10,7 +10,7 @@
     "all": "npm run rewards-links && npm run desktop-searches && npm run mobile-searches",
     "update-msedgedriver": "cd ./node_modules/msedgedriver && npm run update-msedgedriver && cd ../.."
   },
-  "author": "",
+  "author": "Nick Allen",
   "license": "ISC",
   "dependencies": {
     "msedgedriver": "^91.0.0",
