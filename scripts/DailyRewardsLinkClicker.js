@@ -108,7 +108,7 @@ const doPoll = async (driver) => {
     options.addArguments(`user-data-dir=${USER_DATA_DIR}`);
     options.addArguments(`profile-directory=${PROFILE_DIR}`);
     options.addArguments(`--enable-features=msEdgeDeleteBrowsingDataOnExit`);
-    options.addArguments('headless');
+    // options.addArguments('headless');
     const driver = edge.Driver.createSession(options, service);
 
     try {
