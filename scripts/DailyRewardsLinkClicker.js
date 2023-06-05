@@ -132,9 +132,11 @@ const doPoll = async (driver) => {
             // Switch to the new tab
             const tabs = await driver.getAllWindowHandles();
             await driver.switchTo().window(tabs[1]);
+            await driver.sleep(PAUSE);
 
             // Look for quiz
             const quizPanel = await driver.findElements(By.id(QUIZ_PANEL_ID));
+            console.info(`QuizPanel Found: ${quizPanel.length > 0}`);
             if (quizPanel.length > 0) {
                 await takeQuiz(driver);
             }
