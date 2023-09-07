@@ -9,6 +9,7 @@ const USER_DATA_DIR = "C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Da
 const PROFILE_DIR = "Default";
 const MOBILE = "mobile";
 const MOBILE_DEVICE = "Nexus 5";
+const ACCEPT_COOKIE_BUTTON_SELECTOR = "div.bnp_cookie_banner button.bnp_btn_accept";
 
 (async function RunSearch() {
     // Get Input Args
@@ -33,6 +34,20 @@ const MOBILE_DEVICE = "Nexus 5";
 
     try {
         await driver.get(BING_SEARCH_URL);
+        await driver.sleep(PAUSE);
+
+        // If the Accept Cookies button is found, click it
+        const acceptButton = await driver.findElements(By.css(ACCEPT_COOKIE_BUTTON_SELECTOR));
+        if (acceptButton.length === 0) {
+            console.debug(`-->NO ACCEPT COOKIES BUTTON FOUND, SKIPPING...`);
+        } else {
+            console.debug(`-->ACCEPT COOKIES BUTTON FOUND!`);
+            try {
+                await acceptButton[0].click();
+            } catch (e) {
+                console.warn("ERROR ACCEPTING COOKIES. CONTINUING...");
+            }
+        }
 
         for (let i = 0; i < numSearches; i++) {
             // Add character to search

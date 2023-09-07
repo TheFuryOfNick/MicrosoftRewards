@@ -20,6 +20,7 @@ const THIS_OR_THAT_PANEL_CLASSNAME = "btOptionCard";
 const COMPLETED_ANSWER_PANEL_CLASSNAME = "btsel";
 const ALT_COMPLETED_ANSWER_PANEL_CLASSNAME = "optionDisable";
 const POLL_CHOICE_PANEL_CLASSNAME = "btOption";
+const ACCEPT_COOKIE_BUTTON_SELECTOR = "div.bnp_cookie_banner button.bnp_btn_accept";
 
 
 const takeQuiz = async (driver) => {
@@ -133,6 +134,19 @@ const doPoll = async (driver) => {
             const tabs = await driver.getAllWindowHandles();
             await driver.switchTo().window(tabs[1]);
             await driver.sleep(PAUSE);
+
+            // If the Accept Cookies button is found, click it
+            const acceptButton = await driver.findElements(By.css(ACCEPT_COOKIE_BUTTON_SELECTOR));
+            if (acceptButton.length === 0) {
+                console.debug(`-->NO ACCEPT COOKIES BUTTON FOUND, SKIPPING...`);
+            } else {
+                console.debug(`-->ACCEPT COOKIES BUTTON FOUND!`);
+                try {
+                    await acceptButton[0].click();
+                } catch (e) {
+                    console.warn("ERROR ACCEPTING COOKIES. CONTINUING...");
+                }
+            }
 
             // Look for quiz
             const quizPanel = await driver.findElements(By.id(QUIZ_PANEL_ID));
