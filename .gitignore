@@ -11,6 +11,9 @@
 # production
 /build
 
+# machine specific configuration
+scripts/MicrosoftRewardsStartupScript.bat
+
 # misc
 .DS_Store
 .env.local
