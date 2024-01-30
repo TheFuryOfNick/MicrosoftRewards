@@ -4,4 +4,4 @@
 
 taskkill /F /IM msedge.exe
 cd C:\Users\Nick\Downloads\Programming\MicrosoftRewards
-npm run rewards-links
+npm run mobile-searches

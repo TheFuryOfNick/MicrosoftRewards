@@ -116,6 +116,7 @@ const doPoll = async (driver) => {
 
         // Open Rewards page
         await driver.get(REWARDS_URL);
+        await driver.sleep(PAUSE);
 
         // Find all rewards links
         const els = await driver.findElements(By.className(REWARD_LINK_CLASSNAME));

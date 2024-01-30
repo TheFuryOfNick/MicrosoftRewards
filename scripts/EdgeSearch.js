@@ -2,7 +2,7 @@ const {By} = require("selenium-webdriver");
 require('msedgedriver');
 
 const NUM_SEARCHES = 50;
-const PAUSE = 2000;
+const PAUSE = 5000;
 const BING_SEARCH_URL = "https://bing.com";
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 const USER_DATA_DIR = "C:\\Users\\Nick\\AppData\\Local\\Microsoft\\Edge\\User Data";
@@ -34,6 +34,7 @@ const ACCEPT_COOKIE_BUTTON_SELECTOR = "div.bnp_cookie_banner button.bnp_btn_acce
 
     try {
         await driver.get(BING_SEARCH_URL);
+        console.log("Opened BING Search Page");
         await driver.sleep(PAUSE);
 
         // If the Accept Cookies button is found, click it
